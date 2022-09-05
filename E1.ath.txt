@@ -1,0 +1,15 @@
+module todomal{
+
+#Axioms
+assert* Assositivity := x*y = y*x;
+assert* PowDefine0 := x^0 = 0;
+assert* PowDefine1 := x^n+1= x*(x^n)  
+ 
+conclude (forall n,x,y: N ( (x*y)^n = (x^n*y^n))
+	pick any n,x,y: N
+	[(x*y)^n
+	= (x*y) * (x*y)* (x*y) * (x*y) ... 	[Def Pow]
+	= (x*x*x*x ... ) * (y*y*y*y ... )  	[Assosiatividad]
+	= (x^n)*(y^n)						[Inv def Pow]
+]
+}

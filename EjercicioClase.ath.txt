@@ -1,0 +1,43 @@
+#
+# From Arkoudas/Musser: Fundamental Proof Methods in Computer Science
+# MIT Press 2016.  Chapter 1.
+#
+set-flag print-var-sorts "off"
+set-flag print-qvar-sorts "off"
+
+#==========================================================================
+# SECTION: Equality chaining
+#
+
+module M {
+
+  domain D
+  declare I: D
+  declare *: [D D] -> D [200] # We give a precedence of 200 to *
+  declare inv: [D] -> D [220] # and 220 to inv 
+
+  # Let's define some handy abbreviations for a few variables over D: 
+  define [x y z] := [?x:D ?y:D ?z:D] 
+
+  # We can now assert the four given axioms:
+
+  # assert* makes free variables implicitly universally quantified.
+
+  assert* Left-Identity  := (I * x = x)
+# eg. stands for:
+# assert Left-Identity  := (forall x . (I * x = x))
+
+  assert* Right-Identity := (x * I = x)
+  assert* Right-Inverse  := (x * inv x = I)
+  assert* Associativity  := (x * (y * z) = (x * y) * z)
+
+  # Finally, the desired proof:
+  
+  conclude (forall x . inv inv x = x)
+    pick-any a:D
+      (!chain [(inv inv a) = (I * inv inv a)             [Left-Identity]
+                           = ((a * inv a) * inv inv a)   [Right-Inverse]
+                           = (a * (inv a * (inv inv a))) [Associativity]
+                           = (a * I)                     [Right-Inverse]
+                           = a                           [Right-Identity]])
+} # close module M 
